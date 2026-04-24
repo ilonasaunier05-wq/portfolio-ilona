@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projet — Paymatch</title>
+  <style>
+    :root {
+      --bg: #f6f3ee;
+      --surface: rgba(255,255,255,0.76);
+      --text: #1e1e1b;
+      --muted: #5f5a54;
+      --line: rgba(30,30,27,0.12);
+      --accent: #8d7b68;
+      --accent-soft: #d8cfc4;
+      --shadow: 0 20px 50px rgba(34, 34, 34, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(141, 123, 104, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(216, 207, 196, 0.35), transparent 24%),
+        linear-gradient(180deg, #f8f6f2 0%, #f3efe9 100%);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      background: rgba(246, 243, 238, 0.78);
+      border-bottom: 1px solid rgba(30,30,27,0.08);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      font-weight: 600;
+    }
+
+    .brand span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 56px 0 28px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.65);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-card {
+      padding: 42px;
+    }
+
+    .hero-visual {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero-visual img {
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      object-fit: cover;
+      background: #fff;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    h1,h2,h3 { margin: 0; line-height: 1.08; }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      letter-spacing: -0.04em;
+      margin-bottom: 18px;
+    }
+
+    .hero-card p {
+      margin: 0;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .meta-item {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+    }
+
+    .meta-item strong {
+      display: block;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .meta-item span {
+      font-size: 1rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    section {
+      padding: 18px 0;
+      scroll-margin-top: 85px;
+    }
+
+    .section-head {
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      letter-spacing: -0.03em;
+      margin-top: 6px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      padding: 30px;
+      background: rgba(255,255,255,0.74);
+      border: 1px solid rgba(30,30,27,0.1);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .panel p + p { margin-top: 14px; }
+
+    .list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .list li + li { margin-top: 10px; }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #4b4238;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .result-card {
+      padding: 24px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.74);
+      border: 1px solid rgba(30,30,27,0.1);
+      box-shadow: var(--shadow);
+    }
+
+    .result-card strong {
+      display: block;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .result-card span {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      letter-spacing: -0.04em;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .gallery figure,
+    .hero-visual figure {
+      margin: 0;
+    }
+
+    figcaption {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .button {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-weight: 600;
+    }
+
+    .center-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .footer {
+      padding: 34px 0 56px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 950px) {
+      .hero-grid,
+      .grid-2,
+      .meta-grid,
+      .result-grid,
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .hero-visual,
+      .panel,
+      .result-card {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <strong>Ilona Saunier</strong>
+        <span>Projet détaillé</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Retour au portfolio</a>
+        <a href="#contexte">Contexte</a>
+        <a href="#methodes">Méthodes</a>
+        <a href="#resultats">Résultats</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <article class="card hero-card">
+          <div class="eyebrow">Projet · Traiter / Automatiser</div>
+          <h1>Paymatch</h1>
+          <p>
+            Paymatch est un projet de rapprochement automatique de flux financiers complexes. L’objectif était de rendre exploitables, fiables et reproductibles des données hétérogènes issues de factures, de relevés bancaires et de retours d’organismes payeurs, afin de réduire les traitements manuels et d’améliorer le suivi comptable dans un contexte métier exigeant.
+          </p>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <strong>Type</strong>
+              <span>Pipeline de traitement</span>
+            </div>
+            <div class="meta-item">
+              <strong>Domaine</strong>
+              <span>Flux financiers</span>
+            </div>
+            <div class="meta-item">
+              <strong>Outils</strong>
+              <span>Python · Airflow · Docker</span>
+            </div>
+            <div class="meta-item">
+              <strong>Stockage</strong>
+              <span>PostgreSQL · SQLModel</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="card hero-visual">
+          <figure>
+            <img src="soft-cosine.png" alt="Illustration de similarité cosinus utilisée dans le projet Paymatch" />
+            <figcaption>Illustration de la logique de similarité cosinus utilisée dans le moteur de matching.</figcaption>
+          </figure>
+        </aside>
+      </div>
+    </section>
+
+    <section id="contexte" class="container">
+      <div class="section-head">
+        <div class="eyebrow">01 · Contexte</div>
+        <h2>Automatiser le rapprochement de flux hétérogènes</h2>
+      </div>
+      <div class="grid-2">
+        <article class="panel">
+          <p>
+            Le projet repose sur un besoin concret : rapprocher automatiquement des factures émises, des virements bancaires et des retours RSP dans un environnement où les données sont hétérogènes, parfois incomplètes, et souvent difficiles à comparer directement.
+          </p>
+          <p>
+            L’enjeu était d’obtenir un système fiable, maintenable et reproductible, capable de limiter les tâches manuelles et de produire des résultats directement exploitables pour le suivi comptable.
+          </p>
+        </article>
+        <article class="panel">
+          <p>
+            J’ai participé à la structuration du pipeline complet, depuis la modélisation des entités métiers jusqu’à l’automatisation du traitement. Le projet s’inscrit dans une logique d’optimisation opérationnelle et de valorisation de données issues de plusieurs sources.
+          </p>
+          <div class="pill-list">
+            <span class="pill">ETL</span>
+            <span class="pill">Matching</span>
+            <span class="pill">Automatisation</span>
+            <span class="pill">Clustering</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="methodes" class="container">
+      <div class="section-head">
+        <div class="eyebrow">02 · Méthodes</div>
+        <h2>Démarche technique</h2>
+      </div>
+      <div class="grid-2">
+        <article class="panel">
+          <p>
+            Les données métiers ont d’abord été modélisées dans PostgreSQL via SQLModel, afin de représenter proprement les entités du projet. Une extraction ciblée a ensuite été mise en place selon différents filtres métiers, pour préparer des jeux de données cohérents avant les étapes de rapprochement.
+          </p>
+          <p>
+            Après l’extraction, les libellés bancaires ont été nettoyés et normalisés : suppression des accents, uniformisation des caractères, standardisation des dates et des montants. Cette étape était essentielle pour rendre les comparaisons plus fiables.
+          </p>
+        </article>
+        <article class="panel">
+          <p><strong style="display:block; margin-bottom:10px; color:#2b2926;">Approches mises en œuvre</strong></p>
+          <ul class="list">
+            <li>Mesure de similarité cosinus sur des libellés vectorisés par TF-IDF</li>
+            <li>Distance métier personnalisée adaptée au domaine médical</li>
+            <li>Système de scoring pour classer les correspondances</li>
+            <li>Pipeline Airflow avec DAG de huit tâches</li>
+            <li>Clustering K-Means pour regrouper les libellés similaires</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-head">
+        <div class="eyebrow">03 · Visuels du portfolio</div>
+        <h2>Éléments réutilisés</h2>
+      </div>
+      <div class="gallery">
+        <figure class="panel">
+          <img src="image.png" alt="Page du portfolio présentant le projet Paymatch" />
+          <figcaption>Visuel illustrant le fonctionnement global du projet et l’organisation des différentes étapes du pipeline.</figcaption>
+        </figure>
+        <article class="panel">
+          <p>
+            Les visuels présentés illustrent les principales composantes du projet, notamment la logique de similarité cosinus et l’architecture globale du pipeline. Ils permettent de mieux comprendre les choix techniques réalisés et la manière dont les différentes étapes s’articulent entre elles.
+          </p>
+          <p>
+            Ces éléments visuels renforcent la lisibilité du projet et mettent en évidence les mécanismes clés utilisés pour le rapprochement et l’automatisation des flux de données.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="resultats" class="container">
+      <div class="section-head">
+        <div class="eyebrow">04 · Résultats</div>
+        <h2>Ce que le projet met en avant</h2>
+      </div>
+      <div class="result-grid">
+        <article class="result-card">
+          <strong>Pipeline</strong>
+          <span>8 tâches</span>
+        </article>
+        <article class="result-card">
+          <strong>Matching</strong>
+          <span>TF-IDF + métier</span>
+        </article>
+        <article class="result-card">
+          <strong>Clustering</strong>
+          <span>ARI 0,62</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="grid-2">
+        <article class="panel">
+          <p>
+            Ce projet met en évidence ma capacité à concevoir un traitement structuré de bout en bout : modélisation des données, nettoyage, appariement, automatisation et restitution de résultats dans un cadre métier concret. Il illustre également ma capacité à croiser logique technique et compréhension des besoins opérationnels.
+          </p>
+          <p>
+            L’automatisation via Airflow et Docker renforce la reproductibilité du processus, tandis que le moteur de matching et le clustering ouvrent la voie à des usages plus avancés, comme l’alerte ou la supervision de flux.
+          </p>
+        </article>
+        <article class="panel">
+          <p><strong style="display:block; margin-bottom:10px; color:#2b2926;">Compétences mobilisées</strong></p>
+          <ul class="list">
+            <li>Conception de pipeline de traitement de données</li>
+            <li>Nettoyage et normalisation de données textuelles</li>
+            <li>Automatisation avec Apache Airflow</li>
+            <li>Matching hybride entre similarité textuelle et logique métier</li>
+            <li>Structuration de données avec PostgreSQL et SQLModel</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="center-button">
+        <a href="index.html" class="button">Retour au portfolio</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer container">
+    Projet détaillé — Paymatch · Portfolio d’Ilona Saunier
+  </footer>
+</body>
+</html>
